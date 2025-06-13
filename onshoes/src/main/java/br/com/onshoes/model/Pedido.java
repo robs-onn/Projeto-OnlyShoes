@@ -1,9 +1,27 @@
 package br.com.onshoes.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity // Marca a classe Pedido como uma entidade JPA.
+@Table(name = "pedido") // Mapeia explicitamente esta entidade para a tabela "pedido" no seu banco de dados.
 public class Pedido {
 
     public enum StatusPedido {
@@ -14,16 +32,41 @@ public class Pedido {
         CANCELADO
     }
     
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Usuario usuario;
-    private List<ItemPedido> itens = new ArrayList<>();
-    private Pagamento pagamento;
-    private Envio envio;
-    private LocalDateTime dataPedido;
-    private LocalDateTime dataEntrega;
-    private Double valorTotal;
-    private StatusPedido status;
     
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false) 
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "pedido", 
+               cascade = CascadeType.ALL, 
+               orphanRemoval = true, 
+               fetch = FetchType.LAZY) 
+    private List<ItemPedido> itens = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
+    @JoinColumn(name = "pagamento_id", referencedColumnName = "id", unique = true) 
+    private Pagamento pagamento;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "envio_id", referencedColumnName = "id", unique = true) 
+    private Envio envio;
+
+    @Column(name = "data_hora") 
+    private LocalDateTime dataPedido; 
+
+    @Column(name = "data_entrega") 
+    private LocalDateTime dataEntrega;
+
+    @Column(name = "valor_total", precision = 10, scale = 2)
+    private BigDecimal valorTotal;
+
+    @Enumerated(EnumType.STRING) 
+    @Column(name = "status", length = 50)
+    private StatusPedido status;
+
     public Long getId() {
         return id;
     }
@@ -80,11 +123,11 @@ public class Pedido {
         this.dataEntrega = dataEntrega;
     }
 
-    public Double getValorTotal() {
+    public BigDecimal getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(Double valorTotal) {
+    public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
     }
 

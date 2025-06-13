@@ -1,20 +1,37 @@
 package br.com.onshoes.model;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "envio")
 public class Envio {
 
     public enum MetodoEnvio {
-        Metodo1,
-        Metodo2,
-        Metodo3
+        CORREIOS,
+        SEDEX,
+        TRANSPORTADORA,
+        RETIRADA_LOCAL
     }
 
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @OneToOne(mappedBy = "envio", fetch = FetchType.LAZY)
     private Pedido pedido;
+
+    @Column(name = "endereco_entrega", length = 200) 
     private String enderecoEntrega;
+
+    @Column(name = "data_envio") 
     private LocalDateTime dataEnvio;
+
+    @Enumerated(EnumType.STRING) 
+    @Column(name = "metodo", length = 50) 
     private MetodoEnvio metodo;
+
+    @Column(name = "codigo_rastreamento", length = 100) 
     private String codigoRastreamento;
 
     public Long getId() {

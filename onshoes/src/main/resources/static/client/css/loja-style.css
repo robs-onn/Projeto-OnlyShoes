@@ -1,0 +1,390 @@
+/* Importa uma fonte moderna do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+/* Estilos Globais */
+body {
+    background-color: #111111; /* Quase preto */
+    color: #ffffff; /* Branco */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content-loja {
+    flex-grow: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
+    padding: 2rem;
+}
+
+/* --- Cabeçalho --- */
+.loja-header {
+    background-color: #000000;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.loja-header .logo img {
+    height: 40px;
+}
+
+.loja-header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+.loja-header nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.loja-header nav a:hover {
+    color: #ff6600; 
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: #ffffff;
+}
+.header-actions svg {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.header-actions svg:hover {
+    color: #ff6600;
+}
+
+/* --- Estilos para o conteúdo da página inicial --- */
+
+/* Container geral para centralizar conteúdo */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Base para todas as seções */
+.hero-section, .features-section, .categories-section {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+/* --- Seção Hero --- */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/hero-background.jpg'); /* Adicione uma imagem de fundo aqui se desejar */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.hero-content .highlight {
+    color: #ff6600; /* Laranja de destaque */
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    color: #ccc;
+}
+
+.hero-buttons .btn {
+    text-decoration: none;
+    padding: 0.8rem 2rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.hero-buttons .btn-primary {
+    background-color: #ff6600;
+    color: #fff;
+    border: 2px solid #ff6600;
+}
+.hero-buttons .btn-primary:hover {
+    background-color: #e65c00;
+}
+
+.hero-buttons .btn-secondary {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+.hero-buttons .btn-secondary:hover {
+    background-color: #fff;
+    color: #111;
+}
+
+/* --- Seção Features --- */
+.features-section {
+    background-color: #1a1a1a;
+}
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-item {
+    padding: 2rem;
+}
+
+.feature-item .feature-icon i {
+    font-size: 3rem;
+    color: #ff6600;
+    margin-bottom: 1rem;
+}
+
+.feature-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-item p {
+    color: #aaa;
+}
+
+
+/* --- Seção Categorias --- */
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+.section-header p {
+    color: #aaa;
+    margin-bottom: 3rem;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.category-card {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    padding: 2rem;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.category-card .category-icon i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+.category-card .category-icon.premium i { color: #ffd700; }
+.category-card .category-icon.top i { color: #c0c0c0; }
+.category-card .category-icon.best i { color: #cd7f32; }
+
+
+.category-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-card .category-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.category-card .category-badge.premium { background-color: #ffd700; color: #000; }
+.category-card .category-badge.top { background-color: #c0c0c0; color: #000; }
+.category-card .category-badge.best { background-color: #cd7f32; color: #fff; }
+
+
+.category-card .btn-outline {
+    text-decoration: none;
+    color: #ff6600;
+    border: 2px solid #ff6600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.category-card .btn-outline:hover {
+    background-color: #ff6600;
+    color: #fff;
+}
+/* --- Grid e Cards de Produto --- */
+.produto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding-bottom: 4rem;
+}
+
+.produto-card {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: #fff;
+}
+
+.produto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+.produto-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.produto-imagem {
+    width: 100%;
+    height: 250px;
+    background-color: #fff; /* Fundo branco para as imagens */
+}
+
+.produto-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer */
+}
+
+.produto-info {
+    padding: 1.5rem;
+    text-align: left;
+}
+
+.produto-categoria {
+    font-size: 0.8rem;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+.produto-nome {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.produto-preco {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ff6600; /* Laranja de destaque */
+}
+
+/* --- Página de Detalhe do Produto --- */
+.produto-detalhe-container {
+    display: flex;
+    gap: 3rem;
+    padding: 4rem 0;
+    align-items: flex-start;
+}
+
+.produto-detalhe-imagem {
+    flex: 1; /* Ocupa metade do espaço */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.produto-detalhe-imagem img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.produto-detalhe-info {
+    flex: 1; /* Ocupa a outra metade */
+    text-align: left;
+}
+
+.produto-detalhe-titulo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.produto-detalhe-preco {
+    font-size: 2rem;
+    color: #ff6600; /* Laranja de destaque */
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.produto-detalhe-descricao h2 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ff6600;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.produto-detalhe-descricao p {
+    color: #ccc;
+    line-height: 1.6;
+}
+
+.produto-detalhe-specs {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 2rem 0;
+    line-height: 1.8;
+}
+
+.btn-add-carrinho {
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add-carrinho:hover {
+    background-color: #e65c00;
+}

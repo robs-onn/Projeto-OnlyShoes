@@ -3,16 +3,8 @@ package br.com.onshoes.model.Usuario;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.DynamicUpdate;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name="usuario")

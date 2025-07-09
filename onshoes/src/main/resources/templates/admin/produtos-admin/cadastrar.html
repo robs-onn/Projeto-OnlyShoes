@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutpadrao}">
+<head>
+    <title>Cadastro de Produto</title>
+</head>
+<body>
+    <div layout:fragment="content" class="main-content">
+        <div class="content-header">
+            <h1>Cadastro de Produto</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/produtos}">Produtos</a></li>
+                    <li class="breadcrumb-item active">Cadastrar</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="content-body">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span th:if="${produto.codigo == null}">Novo Produto</span>
+                        <span th:if="${produto.codigo != null}">Editar Produto</span>
+                    </h3>
+                </div>
+                
+                <form th:action="@{/produtos/novo}" th:object="${produto}" method="POST">
+                    <input type="hidden" th:field="*{codigo}" />
+                    
+                    <div class="card-body">
+                        <div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+                            <div th:each="detailedError : ${#fields.detailedErrors()}">
+                                <span th:text="${detailedError.message}"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nome">Nome *</label>
+                                    <input type="text" class="form-control" id="nome" th:field="*{nome}" 
+                                           th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="marca">Marca *</label>
+                                    <input type="text" class="form-control" id="marca" th:field="*{marca}"
+                                           th:classappend="${#fields.hasErrors('marca')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="modelo">Modelo *</label>
+                                    <input type="text" class="form-control" id="modelo" th:field="*{modelo}"
+                                           th:classappend="${#fields.hasErrors('modelo')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cor">Cor</label>
+                                    <input type="text" class="form-control" id="cor" th:field="*{cor}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descricao">Descrição *</label>
+                            <textarea class="form-control" id="descricao" th:field="*{descricao}" rows="3"
+                                      th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="preco">Preço *</label>
+                                    <input type="number" step="0.01" class="form-control" id="preco" th:field="*{preco}"
+                                           th:classappend="${#fields.hasErrors('preco')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="precoPromocional">Preço Promocional</label>
+                                    <input type="number" step="0.01" class="form-control" id="precoPromocional" th:field="*{precoPromocional}" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="categoria">Categoria *</label>
+                                    <select class="form-control" id="categoria" th:field="*{categoria}"
+                                            th:classappend="${#fields.hasErrors('categoria')} ? 'is-invalid'">
+                                        <option value="">Selecione...</option>
+                                        <option th:each="categoria : ${categorias}" 
+                                                th:value="${categoria}" 
+                                                th:text="${categoria.descricao}"></option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="form-control" id="status" th:field="*{status}">
+                                        <option th:each="status : ${statusList}" 
+                                                th:value="${status}" 
+                                                th:text="${status.descricao}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="imagemPrincipal">URL da Imagem</label>
+                                    <input type="url" class="form-control" id="imagemPrincipal" th:field="*{imagemPrincipal}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                        <a th:href="@{/produtos}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

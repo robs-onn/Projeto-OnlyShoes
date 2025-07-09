@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+  
+  <div class="produto-card" th:fragment="card-produto(produto)">
+    <a th:href="@{/produtos/{codigo}(codigo=${produto.codigo})}" class="produto-link">
+      <div class="produto-imagem">
+        <img th:src="${produto.imagemPrincipal != null ? produto.imagemPrincipal : '/images/placeholder.png'}" 
+             alt="Imagem do produto" />
+      </div>
+      <div class="produto-info">
+        <span class="produto-categoria" th:text="${produto.categoria.descricao}">Primeira Linha</span>
+        <h3 class="produto-nome" th:text="${produto.nome}">Nome do Produto</h3>
+        <p class="produto-preco" th:text="${#numbers.formatCurrency(produto.preco)}">R$ 599,90</p>
+      </div>
+    </a>
+  </div>
+</body>
+</html>

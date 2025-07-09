@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutpadrao}">
+<head>
+    <title>Pesquisa de Produtos</title>
+</head>
+<body>
+    <div layout:fragment="content" class="main-content">
+        <div class="content-header">
+            <h1>Produtos</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item active">Produtos</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="content-body">
+            <!-- Filtros -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title">Filtros de Pesquisa</h3>
+                </div>
+                <form th:action="@{/produtos}" th:object="${produtoFilter}" method="GET">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" class="form-control" id="nome" th:field="*{nome}" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="marca">Marca</label>
+                                    <input type="text" class="form-control" id="marca" th:field="*{marca}" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="categoria">Categoria</label>
+                                    <select class="form-control" id="categoria" th:field="*{categoria}">
+                                        <option value="">Todas</option>
+                                        <option th:each="categoria : ${categorias}" 
+                                                th:value="${categoria}" 
+                                                th:text="${categoria.descricao}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="form-control" id="status" th:field="*{status}">
+                                        <option value="">Todos</option>
+                                        <option th:each="status : ${statusList}" 
+                                                th:value="${status}" 
+                                                th:text="${status.descricao}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Pesquisar
+                        </button>
+                        <a th:href="@{/produtos}" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i> Limpar
+                        </a>
+                        <a th:href="@{/produtos/novo}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Novo Produto
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Resultados -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Resultados da Pesquisa</h3>
+                </div>
+                
+                <div class="card-body" th:if="${not pagina.vazia}">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <a th:href="${pagina.urlOrdenada('codigo')}" class="link-ordenacao">
+                                            Código
+                                            <i class="fas fa-sort" th:if="${not pagina.ordenada('codigo')}"></i>
+                                            <i class="fas fa-sort-up" th:if="${pagina.ordenada('codigo') and not pagina.descendente('codigo')}"></i>
+                                            <i class="fas fa-sort-down" th:if="${pagina.ordenada('codigo') and pagina.descendente('codigo')}"></i>
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a th:href="${pagina.urlOrdenada('nome')}" class="link-ordenacao">
+                                            Nome
+                                            <i class="fas fa-sort" th:if="${not pagina.ordenada('nome')}"></i>
+                                            <i class="fas fa-sort-up" th:if="${pagina.ordenada('nome') and not pagina.descendente('nome')}"></i>
+                                            <i class="fas fa-sort-down" th:if="${pagina.ordenada('nome') and pagina.descendente('nome')}"></i>
+                                        </a>
+                                    </th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="produto : ${pagina.conteudo}">
+                                    <td th:text="${produto.codigo}"></td>
+                                    <td th:text="${produto.nome}"></td>
+                                    <td th:text="${produto.marca}"></td>
+                                    <td th:text="${produto.modelo}"></td>
+                                    <td th:text="${produto.categoria.descricao}"></td>
+                                    <td th:text="${#numbers.formatCurrency(produto.preco)}"></td>
+                                    <td>
+                                        <span class="badge" 
+                                              th:classappend="${produto.status.name() == 'ATIVO'} ? 'badge-success' : 'badge-danger'"
+                                              th:text="${produto.status.descricao}"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a th:href="@{/produtos/{codigo}(codigo=${produto.codigo})}" 
+                                           class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                th:data-codigo="${produto.codigo}"
+                                                th:data-nome="${produto.nome}"
+                                                onclick="confirmarExclusao(this)" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Paginação -->
+                    <div th:replace="~{layout/fragments/paginacao :: paginacao}"></div>
+                </div>
+                
+                <div class="card-body text-center" th:if="${pagina.vazia}">
+                    <h4>Nenhum produto encontrado</h4>
+                    <p>Tente alterar os filtros ou <a th:href="@{/produtos/novo}">cadastre um novo produto</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="scripts">
+        <script>
+            function confirmarExclusao(button) {
+                const codigo = button.getAttribute('data-codigo');
+                const nome = button.getAttribute('data-nome');
+                
+                if (confirm(`Tem certeza que deseja excluir o produto "${nome}"?`)) {
+                    fetch(`/produtos/${codigo}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            return response.text().then(text => {
+                                alert('Erro ao excluir: ' + text);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        alert('Erro ao excluir produto: ' + error.message);
+                    });
+                }
+            }
+        </script>
+    </th:block>
+</body>
+</html>
+

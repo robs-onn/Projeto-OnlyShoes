@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/fragments/client/layoutpadrao-loja}">
+      <link rel="stylesheet" type="text/css" th:href="@{/client/css/loja-style.css}" />
+<head>
+    <title>Nossos Produtos</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="section-header" style="padding-top: 2rem;">
+                <h2>NOSSOS PRODUTOS</h2>
+                <p>Aqui você encontra o sneaker perfeito para o seu estilo.</p>
+            </div>
+
+            <div class="produto-grid" th:if="${not #lists.isEmpty(produtos)}">
+                <div th:each="p : ${produtos}">
+                    <div th:if="${p != null}" 
+                         th:replace="~{layout/fragments/client/card-produto :: card-produto(produto=${p})}">
+                        </div>
+                </div>
+            </div>
+
+            <div class="text-center" th:if="${#lists.isEmpty(produtos)}">
+                <h4>Nenhum produto encontrado no momento.</h4>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

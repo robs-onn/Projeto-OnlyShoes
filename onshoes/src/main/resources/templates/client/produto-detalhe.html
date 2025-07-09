@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/fragments/client/layoutpadrao-loja}">
+      <link rel="stylesheet" type="text/css" th:href="@{/client/css/loja-style.css}" />
+<head>
+    <title th:text="${produto.nome}">Detalhe do Produto</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container produto-detalhe-container" th:object="${produto}">
+            <div class="produto-detalhe-imagem">
+                <img th:src="*{imagemPrincipal != null ? imagemPrincipal : '/images/placeholder.png'}" 
+                     th:alt="*{nome}" />
+            </div>
+
+            <div class="produto-detalhe-info">
+                <h1 class="produto-detalhe-titulo" th:text="*{nome}">Nome do Produto</h1>
+                <p class="produto-detalhe-preco" th:text="${#numbers.formatCurrency(produto.preco)}">R$ 599,90</p>
+                
+                <div class="produto-detalhe-descricao">
+                    <h2>Descrição</h2>
+                    <p th:text="*{descricao}">Descrição completa do produto, seus materiais, tecnologia e história.</p>
+                </div>
+
+                <div class="produto-detalhe-specs">
+                    <strong>Marca:</strong> <span th:text="*{marca}">Marca</span><br/>
+                    <strong>Modelo:</strong> <span th:text="*{modelo}">Modelo</span><br/>
+                    <strong>Categoria:</strong> <span th:text="*{categoria.descricao}">Categoria</span><br/>
+                </div>
+
+                <button class="btn-add-carrinho">
+                    Adicionar ao Carrinho
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,39 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/fragments/client/layoutpadrao-loja}">
-      <link rel="stylesheet" type="text/css" th:href="@{/client/css/loja-style.css}" />
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layoutpadrao-loja.html}">
+
 <head>
     <title th:text="${produto.nome}">Detalhe do Produto</title>
 </head>
+
 <body>
     <div layout:fragment="content">
-        <div class="container produto-detalhe-container" th:object="${produto}">
-            <div class="produto-detalhe-imagem">
-                <img th:src="*{imagemPrincipal != null ? imagemPrincipal : '/images/placeholder.png'}" 
-                     th:alt="*{nome}" />
-            </div>
+        <div class="container mx-auto px-4 py-12" th:object="${produto}">
+            <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
 
-            <div class="produto-detalhe-info">
-                <h1 class="produto-detalhe-titulo" th:text="*{nome}">Nome do Produto</h1>
-                <p class="produto-detalhe-preco" th:text="${#numbers.formatCurrency(produto.preco)}">R$ 599,90</p>
-                
-                <div class="produto-detalhe-descricao">
-                    <h2>Descrição</h2>
-                    <p th:text="*{descricao}">Descrição completa do produto, seus materiais, tecnologia e história.</p>
+                <div class="lg:w-1/2 bg-white rounded-lg p-4">
+                    <img class="w-full h-auto rounded-md"
+                        th:src="*{imagemPrincipal != null and not #strings.isEmpty(imagemPrincipal) ? imagemPrincipal : '/images/placeholder.png'}"
+                        th:alt="*{nome}" />
                 </div>
 
-                <div class="produto-detalhe-specs">
-                    <strong>Marca:</strong> <span th:text="*{marca}">Marca</span><br/>
-                    <strong>Modelo:</strong> <span th:text="*{modelo}">Modelo</span><br/>
-                    <strong>Categoria:</strong> <span th:text="*{categoria.descricao}">Categoria</span><br/>
-                </div>
+                <div class="lg:w-1/2 text-white">
+                    <h1 class="text-4xl font-bold uppercase mb-2" th:text="*{nome}">Nome do Produto</h1>
 
-                <button class="btn-add-carrinho">
-                    Adicionar ao Carrinho
-                </button>
+                     <p class="text-4xl font-bold text-orange-500 mb-6" 
+                       th:text="*{preco != null ? #numbers.formatCurrency(preco) : 'Preço indisponível'}">R$ 599,90</p>
+ 
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold uppercase border-b-2 border-orange-500 pb-2 mb-4">Descrição</h2>
+                        <p class="text-gray-300 leading-relaxed" th:text="*{descricao}">Descrição completa do produto.
+                        </p>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-3">SELECIONE O TAMANHO:</h3>
+                        <div id="tamanhos-container" class="flex flex-wrap gap-3">
+                            <th:block th:each="itemEstoque : *{estoque}">
+                                <button type="button"
+                                    class="size-button border-2 border-gray-600 rounded-md py-2 px-4 transition-colors duration-200"
+                                    th:classappend="${itemEstoque.quantidade == 0} ? 'text-gray-600 bg-gray-800 line-through cursor-not-allowed' : 'hover:border-orange-500 hover:text-orange-500'"
+                                    th:disabled="${itemEstoque.quantidade == 0}"
+                                    th:data-tamanho="${itemEstoque.tamanho}">
+                                    <span th:text="${itemEstoque.tamanho}">42</span>
+                                </button>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <form id="form-add-carrinho" class="flex items-center gap-4 mt-8" th:action="@{/carrinho/adicionar}"
+                        method="POST">
+                        <input type="hidden" name="codigo" th:value="*{codigo}" />
+                        <input type="hidden" id="tamanho-selecionado" name="tamanho" value="" />
+                        <div class="flex items-center gap-2">
+                            <label for="quantidade" class="font-bold">QTD:</label>
+                            <input type="number" id="quantidade" name="quantidade" value="1" min="1" max="10"
+                                class="w-20 bg-gray-800 border border-gray-700 rounded-md py-2 px-3 text-center focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        </div>
+                        <button id="btn-add-carrinho" type="submit"
+                            class="w-full bg-orange-500 text-white font-bold py-3 px-6 rounded-md uppercase text-sm transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed"
+                            disabled>
+                            Adicionar ao Carrinho
+                        </button>
+                    </form>
+
+                    <div class="bg-gray-900 p-4 rounded-md mt-8 text-gray-300">
+                        <strong>Cor:</strong> <span th:text="*{cor}" class="text-white">Cor</span><br />
+                        <strong>Marca:</strong> <span th:text="*{marca}" class="text-white">Marca</span><br />
+                        <strong>Modelo:</strong> <span th:text="*{modelo}" class="text-white">Modelo</span><br />
+                        <strong>Categoria:</strong> <span th:text="*{categoria.descricao}"
+                            class="text-white">Categoria</span><br />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <th:block layout:fragment="scripts">
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const tamanhosContainer =
+                    document.getElementById("tamanhos-container");
+                const inputTamanhoSelecionado = document.getElementById(
+                    "tamanho-selecionado"
+                );
+                const btnAdicionar = document.getElementById("btn-add-carrinho");
+                const formAdicionar = document.getElementById("form-add-carrinho");
+
+                // Lógica para seleção de tamanho
+                tamanhosContainer.addEventListener("click", (event) => {
+                    const botaoClicado = event.target.closest(".size-button");
+                    if (botaoClicado && !botaoClicado.disabled) {
+                        document.querySelectorAll(".size-button").forEach((btn) => {
+                            btn.classList.remove(
+                                "bg-orange-500",
+                                "border-orange-500",
+                                "text-white"
+                            );
+                            btn.classList.add("border-gray-600");
+                        });
+                        botaoClicado.classList.add(
+                            "bg-orange-500",
+                            "border-orange-500",
+                            "text-white"
+                        );
+                        inputTamanhoSelecionado.value = botaoClicado.dataset.tamanho;
+                        btnAdicionar.disabled = false;
+                    }
+                });
+
+                // Lógica para adicionar ao carrinho com fetch
+                formAdicionar.addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    const button = form.querySelector('button[type="submit"]');
+                    const originalButtonText = button.innerHTML;
+
+                    button.disabled = true;
+                    button.innerHTML = "Adicionando...";
+
+                    fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Erro na resposta do servidor.");
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                const cartCounter =
+                                    document.getElementById("cart-item-count");
+                                if (cartCounter) {
+                                    cartCounter.textContent = data.quantidadeTotal;
+                                    cartCounter.classList.remove("hidden");
+                                }
+
+                                button.classList.remove(
+                                    "bg-orange-500",
+                                    "hover:bg-orange-600"
+                                );
+                                button.classList.add("bg-green-500");
+                                button.innerHTML = "Adicionado!";
+
+                                setTimeout(() => {
+                                    button.disabled = false;
+                                    button.innerHTML = originalButtonText;
+                                    button.classList.remove("bg-green-500");
+                                    button.classList.add(
+                                        "bg-orange-500",
+                                        "hover:bg-orange-600"
+                                    );
+                                }, 2000);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Erro ao adicionar ao carrinho:", error);
+                            alert("Não foi possível adicionar o item ao carrinho.");
+                            button.disabled = false;
+                            button.innerHTML = originalButtonText;
+                        });
+                });
+            });
+        </script>
+    </th:block>
 </body>
+
 </html>

@@ -1,109 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layoutpadrao-loja}"> 
-      <link rel="stylesheet" type="text/css" th:href="@{/client/css/loja-style.css}" />
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layoutpadrao-loja.html}">
+
 <head>
     <title>Página Inicial</title>
 </head>
 <body>
     <div layout:fragment="content">
-        <section class="hero-section">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Sneakers <span class="highlight">Exclusivos</span></h1>
-                    <p>Descubra nossa coleção única de tênis importados, premium e primeira linha. 
-                       Autenticidade garantida e as melhores marcas do mundo.</p>
-                    <div class="hero-buttons">
-                        <a th:href="@{/produtos}" class="btn btn-primary">
-                            <i class="fas fa-shopping-bag"></i> Ver Produtos
-                        </a>
-                        <a th:href="@{/ofertas}" class="btn btn-secondary">
-                            <i class="fas fa-fire"></i> Ofertas Especiais
-                        </a>
-                    </div>
+        <section class="bg-black text-white text-center py-20 sm:py-32">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl sm:text-6xl font-bold uppercase tracking-wider mb-4">
+                    Sneakers <span class="text-orange-500">Exclusivos</span>
+                </h1>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
+                    Descubra nossa coleção única de tênis importados, premium e primeira
+                    linha. Autenticidade garantida e as melhores marcas do mundo.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <a th:href="@{/produtos}"
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-md uppercase text-sm transition-colors">
+                        Ver Produtos
+                    </a>
+                    <a th:href="@{/ofertas}"
+                        class="border-2 border-gray-500 hover:bg-gray-500 text-white font-bold py-3 px-8 rounded-md uppercase text-sm transition-colors">
+                        Ofertas Especiais
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section class="features-section">
-            <div class="container">
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">
+        <section class="bg-gray-900 py-16">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <div class="text-center text-white">
+                        <div class="text-orange-500 text-4xl mb-4">
                             <i class="fas fa-shipping-fast"></i>
                         </div>
-                        <h3>Frete Grátis</h3>
-                        <p>Para compras acima de R$ 299,90</p>
+                        <h3 class="text-xl font-bold mb-2">Frete Grátis</h3>
+                        <p class="text-gray-400">Para compras acima de R$ 299,90</p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
+                    <div class="text-center text-white">
+                        <div class="text-orange-500 text-4xl mb-4">
                             <i class="fas fa-shield-alt"></i>
                         </div>
-                        <h3>Compra Segura</h3>
-                        <p>Seus dados sempre protegidos</p>
+                        <h3 class="text-xl font-bold mb-2">Compra Segura</h3>
+                        <p class="text-gray-400">Seus dados sempre protegidos</p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
+                    <div class="text-center text-white">
+                        <div class="text-orange-500 text-4xl mb-4">
                             <i class="fas fa-credit-card"></i>
                         </div>
-                        <h3>Parcele em 12x</h3>
-                        <p>Sem juros no cartão</p>
+                        <h3 class="text-xl font-bold mb-2">Parcele em 12x</h3>
+                        <p class="text-gray-400">Sem juros no cartão</p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
+                    <div class="text-center text-white">
+                        <div class="text-orange-500 text-4xl mb-4">
                             <i class="fas fa-exchange-alt"></i>
                         </div>
-                        <h3>Troca Fácil</h3>
-                        <p>30 dias para trocar</p>
+                        <h3 class="text-xl font-bold mb-2">Troca Fácil</h3>
+                        <p class="text-gray-400">30 dias para efetuar a troca</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="categories-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Nossas Categorias</h2>
-                    <p>Explore nossa seleção cuidadosamente curada de tênis das melhores marcas do mundo</p>
+        <section class="bg-black py-20">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white uppercase">
+                        Nossas Categorias
+                    </h2>
+                    <p class="text-gray-400 mt-2">
+                        Explore nossa seleção cuidadosamente curada.
+                    </p>
                 </div>
-                
-                <div class="categories-grid">
-                    <div class="category-card">
-                        <div class="category-icon premium">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <a th:href="@{/produtos(categoria='IMPORTADO')}"
+                        class="block bg-gray-900 border border-gray-800 rounded-lg p-8 text-center transition-transform hover:-translate-y-2 hover:border-orange-500">
+                        <div class="text-yellow-400 text-4xl mb-4">
                             <i class="fas fa-crown"></i>
                         </div>
-                        <div class="category-content">
-                            <span class="category-badge premium">PREMIUM</span>
-                            <h3>Linha de Importados</h3>
-                            <p>Tênis exclusivos das marcas mais luxuosas: Gucci, Balenciaga, Dior e muito mais.</p>
-                            <a th:href="@{/produtos/importados}" class="btn btn-outline">Ver Produtos</a>
-                        </div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon top">
+                        <h3 class="text-2xl font-bold text-white mb-2">
+                            Linha de Importados
+                        </h3>
+                        <p class="text-gray-400">
+                            Tênis exclusivos das marcas mais luxuosas.
+                        </p>
+                    </a>
+                    <a th:href="@{/produtos(categoria='PREMIUM')}"
+                        class="block bg-gray-900 border border-gray-800 rounded-lg p-8 text-center transition-transform hover:-translate-y-2 hover:border-orange-500">
+                        <div class="text-gray-300 text-4xl mb-4">
                             <i class="fas fa-star"></i>
                         </div>
-                        <div class="category-content">
-                            <span class="category-badge top">TOP</span>
-                            <h3>Linha Premium</h3>
-                            <p>Tênis de alta qualidade com design exclusivo e materiais premium selecionados.</p>
-                            <a th:href="@{/produtos/premium}" class="btn btn-outline">Ver Produtos</a>
-                        </div>
-                    </div>
-                    
-                    <div class="category-card">
-                        <div class="category-icon best">
+                        <h3 class="text-2xl font-bold text-white mb-2">Linha Premium</h3>
+                        <p class="text-gray-400">Alta qualidade com design exclusivo.</p>
+                    </a>
+                    <a th:href="@{/produtos(categoria='PRIMEIRA_LINHA')}"
+                        class="block bg-gray-900 border border-gray-800 rounded-lg p-8 text-center transition-transform hover:-translate-y-2 hover:border-orange-500">
+                        <div class="text-orange-400 text-4xl mb-4">
                             <i class="fas fa-medal"></i>
                         </div>
-                        <div class="category-content">
-                            <span class="category-badge best">BEST</span>
-                            <h3>Primeira Linha</h3>
-                            <p>Nike, Adidas, Puma e outras marcas renomadas com qualidade garantida.</p>
-                            <a th:href="@{/produtos/primeira-linha}" class="btn btn-outline">Ver Produtos</a>
-                        </div>
-                    </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Primeira Linha</h3>
+                        <p class="text-gray-400">
+                            As marcas mais renomadas com qualidade garantida.
+                        </p>
+                    </a>
                 </div>
             </div>
         </section>

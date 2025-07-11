@@ -1,32 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
-  <header class="loja-header" th:fragment="header-loja">
-    <div class="logo">
-      <a th:href="@{/}">
-        <h1 style="color: #ff6600; font-weight: bold;">OnlyShoes</h1>
-      </a>
+<header class="bg-black border-b border-gray-800 p-4 relative"
+        xmlns:th="http://www.thymeleaf.org"
+        th:fragment="header-loja">
+    
+    <div class="flex justify-between items-center w-full">
+        <div class="flex items-center gap-8">
+            <a th:href="@{/}" class="text-2xl font-bold text-orange-500 uppercase">OnlyShoes</a>
+            
+            <nav class="hidden md:flex items-center gap-6 text-gray-300">
+                <a th:href="@{/produtos}" class="hover:text-orange-500 transition-colors">Produtos</a>
+                <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
+                    <a href="#" class="flex items-center gap-2 hover:text-orange-500 transition-colors">
+                        <span>Categorias</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </a>
+                    <div x-show="open" x-transition class="absolute left-0 top-full pt-2 w-48 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-20">
+                        <a th:href="@{/produtos(categoria='IMPORTADO')}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Importados</a>
+                        <a th:href="@{/produtos(categoria='PREMIUM')}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Premium</a>
+                        <a th:href="@{/produtos(categoria='PRIMEIRA_LINHA')}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Primeira Linha</a>
+                        
+                        <div class="border-t border-gray-700 my-1"></div>
+                        <a th:href="@{/ofertas}" class="block px-4 py-2 text-sm text-green-400 hover:bg-green-500 hover:text-white">Ofertas</a>
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="flex items-center">
+             <div class="navbar-carrinho relative">
+                <a th:href="@{/carrinho}" class="text-white text-2xl hover:text-orange-500">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-item-count"
+                          class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                          th:classappend="${(session.carrinho == null or session.carrinho.quantidadeTotalDeItens == 0) ? 'hidden' : ''}"
+                          th:text="${session.carrinho?.quantidadeTotalDeItens}">
+                    </span>
+                </a>
+            </div>
+        </div>
     </div>
 
-    <nav>
-      <ul>
-        <li><a th:href="@{/produtos}">Tênis</a></li>
-        <li><a th:href="@{/acessorios}">Acessórios</a></li>
-        <li><a th:href="@{/contato}">Contato</a></li>
-      </ul>
-    </nav>
-
-    <div class="header-actions">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.328 1.087-.835l1.853-7.412A1.5 1.5 0 0018.002 3H5.247m-3.007 0h3.007" />
-      </svg>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg px-4">
+        <form th:action="@{/buscar}" method="get" class="w-full flex">
+            <input type="text" name="q" placeholder="Buscar Tênis..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-l-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
+            <button type="submit" class="bg-orange-500 text-white p-2 rounded-r-md hover:bg-orange-600">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
     </div>
-  </header>
-</body>
-</html>
+</header>

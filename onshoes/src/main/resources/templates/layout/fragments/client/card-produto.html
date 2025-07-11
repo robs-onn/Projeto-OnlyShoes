@@ -1,19 +1,28 @@
-<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
-  
-  <div class="produto-card" th:fragment="card-produto(produto)">
-    <a th:href="@{/produtos/{codigo}(codigo=${produto.codigo})}" class="produto-link">
-      <div class="produto-imagem">
-        <img th:src="${produto.imagemPrincipal != null ? produto.imagemPrincipal : '/images/placeholder.png'}" 
-             alt="Imagem do produto" />
-      </div>
-      <div class="produto-info">
-        <span class="produto-categoria" th:text="${produto.categoria.descricao}">Primeira Linha</span>
-        <h3 class="produto-nome" th:text="${produto.nome}">Nome do Produto</h3>
-        <p class="produto-preco" th:text="${#numbers.formatCurrency(produto.preco)}">R$ 599,90</p>
-      </div>
+<div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 hover:-translate-y-2" 
+     xmlns:th="http://www.thymeleaf.org" 
+     th:fragment="card-produto(produto)">
+
+    <a th:href="@{/produtos/{codigo}(codigo=${produto.codigo})}" class="block">
+        <div class="h-64 bg-white flex items-center justify-center p-4">
+            <img class="max-h-full max-w-full object-contain"
+                 th:src="${produto.imagemPrincipal != null and not #strings.isEmpty(produto.imagemPrincipal) ? produto.imagemPrincipal : '/images/placeholder.png'}" 
+                 alt="Imagem do produto" />
+        </div>
+        
+        <div class="p-6 text-left">
+            <span class="text-xs text-gray-400 uppercase font-semibold" th:text="${produto.categoria.descricao}">Primeira Linha</span>
+            <h3 class="text-lg font-bold text-white mt-2 truncate" th:text="${produto.nome}">Nome do Produto</h3>
+            
+            <div class="mt-2">
+                <p th:if="${produto.precoPromocional == null or produto.precoPromocional <= 0}" 
+                   class="text-xl font-bold text-orange-500" 
+                   th:text="${#numbers.formatCurrency(produto.preco)}"></p>
+                
+                <div th:if="${produto.precoPromocional != null and produto.precoPromocional > 0}">
+                    <del class="text-base text-gray-500" th:text="${#numbers.formatCurrency(produto.preco)}"></del>
+                    <p class="text-xl font-bold text-green-400" th:text="${#numbers.formatCurrency(produto.precoPromocional)}"></p>
+                </div>
+            </div>
+        </div>
     </a>
-  </div>
-</body>
-</html>
+</div>

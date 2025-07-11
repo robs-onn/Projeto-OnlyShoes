@@ -71,6 +71,11 @@
         	<artifactId>spring-boot-starter-thymeleaf</artifactId>
     	</dependency>
 
+		<dependency>
+    	<groupId>nz.net.ultraq.thymeleaf</groupId>
+    		<artifactId>thymeleaf-layout-dialect</artifactId>
+		</dependency>
+
 		<!-- POSTGRESQL -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -119,7 +124,71 @@
 					<password>12345</password>
 				</configuration>
 			</plugin>
+
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>npm-install</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm-build-css</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build:css</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
+		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>3.2.0</versionRange>
+										<goals>
+											<goal>exec</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>

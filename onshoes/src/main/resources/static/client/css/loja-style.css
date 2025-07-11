@@ -388,3 +388,208 @@ body {
 .btn-add-carrinho:hover {
     background-color: #e65c00;
 }
+
+/* --- Estilos para o formulário de adicionar ao carrinho --- */
+.form-add-carrinho {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.form-grupo-carrinho {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-quantidade {
+    width: 60px;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.btn-add-carrinho {
+    flex-grow: 1; /* Faz o botão ocupar o espaço restante */
+}
+
+/* --- Página do Carrinho --- */
+.carrinho-container {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    padding-bottom: 4rem;
+}
+
+.carrinho-tabela {
+    flex-grow: 1;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1a1a1a;
+}
+
+.carrinho-tabela th, .carrinho-tabela td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+.carrinho-tabela th {
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.carrinho-imagem-produto {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.btn-remover {
+    background: none;
+    border: none;
+    color: #ff6600;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.carrinho-resumo {
+    width: 300px;
+    flex-shrink: 0;
+    background-color: #1a1a1a;
+    padding: 2rem;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.carrinho-resumo h3 {
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+.resumo-linha {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+}
+
+.resumo-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+.btn-finalizar-compra {
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.btn-finalizar-compra:hover {
+    background-color: #e65c00;
+}
+
+/* --- Nova Barra de Navegação Principal --- */
+.navbar-principal {
+    background-color: #000000;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilo do Logo/Título */
+.navbar-logo a {
+    text-decoration: none;
+    color: #ff6600;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Estilo da Barra de Busca */
+.navbar-busca {
+    flex-grow: 1;
+    max-width: 500px; /* Define uma largura máxima para a barra */
+    margin: 0 2rem;
+}
+
+.form-busca {
+    display: flex;
+    border: 1px solid #555;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.input-busca {
+    flex-grow: 1;
+    border: none;
+    background-color: #222;
+    padding: 0.75rem 1.25rem;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.input-busca:focus {
+    outline: none;
+    background-color: #333;
+}
+
+.btn-busca {
+    background-color: #ff6600;
+    border: none;
+    color: #fff;
+    padding: 0 1.25rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* Estilo do Ícone do Carrinho */
+.navbar-carrinho a {
+    position: relative;
+    color: #fff;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.navbar-carrinho a:hover {
+    color: #ff6600;
+}
+
+.carrinho-contador {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: #ff6600;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}

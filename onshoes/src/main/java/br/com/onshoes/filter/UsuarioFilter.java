@@ -1,7 +1,6 @@
 package br.com.onshoes.filter;
 
 import java.time.LocalDate;
-// CORREÇÃO: O import foi alterado de 'Status' para 'StatusUsuario'.
 import br.com.onshoes.model.Usuario.StatusUsuario;
 import br.com.onshoes.model.Usuario.TipoUsuario;
 
@@ -11,7 +10,6 @@ public class UsuarioFilter {
     private String username;
     private String email;
     private TipoUsuario papel;
-    // CORREÇÃO: O tipo do campo foi alterado de 'Status' para 'StatusUsuario'.
     private StatusUsuario status;
     private LocalDate dataCriacaoInicio;
     private LocalDate dataCriacaoFim;
@@ -49,7 +47,6 @@ public class UsuarioFilter {
         this.papel = papel;
     }
 
-    // CORREÇÃO: O tipo foi alterado nos métodos get/set.
     public StatusUsuario getStatus() {
         return status;
     }

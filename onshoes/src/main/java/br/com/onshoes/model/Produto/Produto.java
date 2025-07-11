@@ -2,10 +2,12 @@ package br.com.onshoes.model.Produto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.*;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="produto")
+@Table(name = "produto")
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,40 +30,106 @@ public class Produto implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusProduto status;
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Estoque> estoque = new ArrayList<>();
+
     private String imagemPrincipal;
 
-    // --- GETTERS E SETTERS PÚBLICOS ---
+    public Long getCodigo() {
+        return codigo;
+    }
 
-    public Long getCodigo() { return codigo; }
-    public void setCodigo(Long codigo) { this.codigo = codigo; }
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public String getNome() {
+        return nome;
+    }
 
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public String getMarca() { return marca; }
-    public void setMarca(String marca) { this.marca = marca; }
+    public String getDescricao() {
+        return descricao;
+    }
 
-    public String getModelo() { return modelo; }
-    public void setModelo(String modelo) { this.modelo = modelo; }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-    public String getCor() { return cor; }
-    public void setCor(String cor) { this.cor = cor; }
+    public String getMarca() {
+        return marca;
+    }
 
-    public BigDecimal getPreco() { return preco; }
-    public void setPreco(BigDecimal preco) { this.preco = preco; }
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
 
-    public BigDecimal getPrecoPromocional() { return precoPromocional; }
-    public void setPrecoPromocional(BigDecimal precoPromocional) { this.precoPromocional = precoPromocional; }
+    public String getModelo() {
+        return modelo;
+    }
 
-    public CategoriaProduto getCategoria() { return categoria; }
-    public void setCategoria(CategoriaProduto categoria) { this.categoria = categoria; }
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
 
-    public StatusProduto getStatus() { return status; }
-    public void setStatus(StatusProduto status) { this.status = status; }
+    public String getCor() {
+        return cor;
+    }
 
-    public String getImagemPrincipal() { return imagemPrincipal; }
-    public void setImagemPrincipal(String imagemPrincipal) { this.imagemPrincipal = imagemPrincipal; }
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public BigDecimal getPrecoPromocional() {
+        return precoPromocional;
+    }
+
+    public void setPrecoPromocional(BigDecimal precoPromocional) {
+        this.precoPromocional = precoPromocional;
+    }
+
+    public CategoriaProduto getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaProduto categoria) {
+        this.categoria = categoria;
+    }
+
+    public StatusProduto getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusProduto status) {
+        this.status = status;
+    }
+
+    public String getImagemPrincipal() {
+        return imagemPrincipal;
+    }
+
+    public void setImagemPrincipal(String imagemPrincipal) {
+        this.imagemPrincipal = imagemPrincipal;
+    }
+
+    public List<Estoque> getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(List<Estoque> estoque) {
+        this.estoque = estoque;
+    }
+
+    
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutpadrao-loja.html}">
+<head>
+    <title>Meu Carrinho</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mx-auto px-4 py-12">
+        <h2 class="text-3xl font-bold text-white uppercase text-center mb-8">Meu Carrinho de Compras</h2>
+        
+        <div class="flex flex-col lg:flex-row gap-8" th:if="${carrinho != null and not #lists.isEmpty(carrinho.itens)}">
+            
+            <div class="flex-grow bg-gray-900 rounded-lg p-4">
+                <table class="w-full text-left text-gray-300">
+                    <thead class="border-b border-gray-700">
+                        <tr>
+                            <th class="p-4 uppercase text-sm font-medium" colspan="2">Produto</th>
+                            <th class="p-4 uppercase text-sm font-medium">Preço</th>
+                            <th class="p-4 uppercase text-sm font-medium">Qtd</th>
+                            <th class="p-4 uppercase text-sm font-medium text-right">Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${carrinho.itens}" class="border-b border-gray-800">
+                            <td class="p-4" style="width: 100px;">
+                                <a th:href="@{/produtos/{codigo}(codigo=${item.produto.codigo})}">
+                                    <img class="rounded bg-white p-1" th:src="${item.produto.imagemPrincipal != null and not #strings.isEmpty(item.produto.imagemPrincipal) ? item.produto.imagemPrincipal : '/images/placeholder.png'}" alt="Imagem do produto" />
+                                </a>
+                            </td>
+                            <td class="p-4">
+                                <a th:href="@{/produtos/{codigo}(codigo=${item.produto.codigo})}" class="font-bold text-white hover:text-orange-500" th:text="${item.produto.nome}">Nome do Produto</a>
+                                <div class="text-sm text-gray-400 mt-1">
+                                    Cor: <span th:text="${item.produto.cor}">Branco</span>
+                                </div>
+                                <div class="text-sm text-gray-400">
+                                    Tamanho: <span th:text="${item.tamanho}">42</span>
+                                </div>
+                            </td>
+                            <td class="p-4" th:text="${#numbers.formatCurrency(item.produto.preco)}">R$ 499,90</td>
+                            <td class="p-4" th:text="${item.quantidade}">1</td>
+                            <td class="p-4 font-bold text-white text-right" th:text="${#numbers.formatCurrency(item.subtotal)}">R$ 499,90</td>
+                            <td class="p-4">
+                                <form th:action="@{/carrinho/remover}" method="post">
+                                    <input type="hidden" name="codigo" th:value="${item.produto.codigo}" />
+                                    <input type="hidden" name="tamanho" th:value="${item.tamanho}" />
+                                    <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Remover</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="w-full lg:w-80 bg-gray-900 p-6 rounded-lg self-start">
+                <h3 class="text-xl font-bold text-white uppercase border-b border-gray-700 pb-4 mb-4">Resumo do Pedido</h3>
+                <div class="flex justify-between items-center text-lg text-gray-300 mb-6">
+                    <span>Total</span>
+                    <span class="font-bold text-2xl text-orange-500" th:text="${#numbers.formatCurrency(carrinho.valorTotal)}">R$ 999,80</span>
+                </div>
+                <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-md uppercase text-sm transition-colors">Finalizar Compra</button>
+            </div>
+        </div>
+        
+        <div class="text-center text-white py-16" th:if="${carrinho == null or #lists.isEmpty(carrinho.itens)}">
+            <h3 class="text-2xl font-bold">Seu carrinho está vazio.</h3>
+            <p class="mt-4">
+                <a th:href="@{/produtos}" class="text-orange-500 hover:underline">Continue comprando</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

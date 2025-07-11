@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="paginacao(pagina, query)" th:if="${pagina.totalPages > 1}" aria-label="Paginação">
+    <ul class="flex justify-center items-center -space-x-px h-10 text-base">
+        <li>
+            <a th:if="${not pagina.first}"
+               th:href="@{/produtos(page=${pagina.number - 1}, q=${query})}"
+               hx:get="" 
+               th:attr="hx-get=@{/produtos(page=${pagina.number - 1}, q=${query})}"
+               hx-target="#grid-produtos"
+               hx-swap="outerHTML"
+               hx-push-url="true"
+               class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-400 bg-gray-800 border border-gray-700 rounded-s-lg hover:bg-gray-700 hover:text-white">
+                Anterior
+            </a>
+            <span th:if="${pagina.first}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-gray-900 border border-gray-700 rounded-s-lg cursor-not-allowed">
+                Anterior
+            </span>
+        </li>
+        
+        <li th:each="pageNumber : ${#numbers.sequence(0, pagina.totalPages - 1)}">
+             <a th:if="${pageNumber != pagina.number}"
+               th:href="@{/produtos(page=${pageNumber}, q=${query})}"
+               hx:get="" 
+               th:attr="hx-get=@{/produtos(page=${pageNumber}, q=${query})}"
+               hx-target="#grid-produtos"
+               hx-swap="outerHTML"
+               hx-push-url="true"
+               th:text="${pageNumber + 1}"
+               class="flex items-center justify-center px-4 h-10 leading-tight text-gray-400 bg-gray-800 border border-gray-700 hover:bg-gray-700 hover:text-white">
+             </a>
+             <span th:if="${pageNumber == pagina.number}"
+                   th:text="${pageNumber + 1}"
+                   aria-current="page"
+                   class="z-10 flex items-center justify-center px-4 h-10 leading-tight text-white bg-orange-600 border border-orange-600">
+             </span>
+        </li>
+
+        <li>
+            <a th:if="${not pagina.last}"
+               th:href="@{/produtos(page=${pagina.number + 1}, q=${query})}"
+               hx:get="" 
+               th:attr="hx-get=@{/produtos(page=${pagina.number + 1}, q=${query})}"
+               hx-target="#grid-produtos"
+               hx-swap="outerHTML"
+               hx-push-url="true"
+               class="flex items-center justify-center px-4 h-10 leading-tight text-gray-400 bg-gray-800 border border-gray-700 rounded-e-lg hover:bg-gray-700 hover:text-white">
+                Próximo
+            </a>
+             <span th:if="${pagina.last}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-gray-900 border border-gray-700 rounded-e-lg cursor-not-allowed">
+                Próximo
+            </span>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

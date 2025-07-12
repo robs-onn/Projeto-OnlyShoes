@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Área Administrativa - OnlyShoes</title>
+    <link rel="stylesheet" th:href="@{/admin/css/admin-style.css}">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex">
+
+    <div th:replace="~{layout/fragments/admin/sidebar-admin :: sidebar-admin}"></div>
+
+        <div class="flex-1 p-6 ml-64">
+            <div layout:fragment="content"></div>
+        </div>
+
+</body>
+
+</html>

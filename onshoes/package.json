@@ -3,11 +3,12 @@
   "version": "0.0.1-SNAPSHOT",
   "description": "Frontend dependencies for OnlyShoes project",
   "scripts": {
-    "build:css": "tailwindcss -i ./src/main/resources/static/client/css/input.css -o ./target/classes/static/client/css/loja-style.css"
-  },
+  "build:css": "tailwindcss -i ./src/main/resources/static/client/css/input.css -o ./target/classes/static/client/css/loja-style.css",
+  "build:css-admin": "tailwindcss -i ./src/main/resources/static/admin/css/input.css -o ./target/classes/static/admin/css/admin-style.css"
+},
   "devDependencies": {
     "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
+    "postcss": "^8.5.6",
     "tailwindcss": "^3.4.4"
   }
 }

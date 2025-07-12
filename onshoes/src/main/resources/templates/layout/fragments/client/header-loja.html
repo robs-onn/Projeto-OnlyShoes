@@ -1,11 +1,11 @@
-<header class="bg-black border-b border-gray-800 p-4 relative"
-        xmlns:th="http://www.thymeleaf.org"
-        th:fragment="header-loja">
-    
+<header class="bg-black border-b border-gray-800 p-4 relative" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="header-loja">
+
     <div class="flex justify-between items-center w-full">
+        <!-- Lado esquerdo: logo e navegação -->
         <div class="flex items-center gap-8">
             <a th:href="@{/}" class="text-2xl font-bold text-orange-500 uppercase">OnlyShoes</a>
-            
+
             <nav class="hidden md:flex items-center gap-6 text-gray-300">
                 <a th:href="@{/produtos}" class="hover:text-orange-500 transition-colors">Produtos</a>
                 <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
@@ -13,39 +13,86 @@
                         <span>Categorias</span>
                         <i class="fas fa-chevron-down text-xs"></i>
                     </a>
-                    <div x-show="open" x-transition class="absolute left-0 top-full pt-2 w-48 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-20">
-                        <a th:href="@{/produtos(categoria='IMPORTADO')}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Importados</a>
-                        <a th:href="@{/produtos(categoria='PREMIUM')}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Premium</a>
-                        <a th:href="@{/produtos(categoria='PRIMEIRA_LINHA')}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Primeira Linha</a>
-                        
+                    <div x-show="open" x-transition
+                        class="absolute left-0 top-full pt-2 w-48 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-20">
+                        <a th:href="@{/produtos(categoria='IMPORTADO')}"
+                            class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Importados</a>
+                        <a th:href="@{/produtos(categoria='PREMIUM')}"
+                            class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Premium</a>
+                        <a th:href="@{/produtos(categoria='PRIMEIRA_LINHA')}"
+                            class="block px-4 py-2 text-sm text-gray-300 hover:bg-orange-500 hover:text-white">Primeira
+                            Linha</a>
                         <div class="border-t border-gray-700 my-1"></div>
-                        <a th:href="@{/ofertas}" class="block px-4 py-2 text-sm text-green-400 hover:bg-green-500 hover:text-white">Ofertas</a>
-
+                        <a th:href="@{/ofertas}"
+                            class="block px-4 py-2 text-sm text-green-400 hover:bg-green-500 hover:text-white">Ofertas</a>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <div class="flex items-center">
-             <div class="navbar-carrinho relative">
+        <!-- Centro: barra de busca -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg px-4">
+            <form th:action="@{/buscar}" method="get" class="w-full flex">
+                <input type="text" name="q" placeholder="Buscar Tênis..."
+                    class="w-full bg-gray-200 text-white border border-gray-200 rounded-l-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                <button type="submit" class="bg-orange-500 text-white p-2 rounded-r-md hover:bg-orange-600">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Lado direito: login/logout + carrinho -->
+        <div class="flex items-center gap-6">
+
+            <!-- Quando não autenticado: ícone de login -->
+            <a th:href="@{/login}" sec:authorize="!isAuthenticated()"
+                class="hover:text-orange-500 text-white text-xl flex items-center justify-center" title="Entrar">
+                <i class="fas fa-user"></i>
+            </a>
+
+            <!-- Quando autenticado: ícone + dropdown com "Sair" -->
+            <div sec:authorize="isAuthenticated()" x-data="{ open: false }" class="relative">
+                <button @click="open = !open"
+                    class="flex items-center gap-2 text-white hover:text-orange-500 text-xl focus:outline-none"
+                    title="Conta">
+                    <i class="fas fa-user"></i>
+                    <!-- Mostra o nome (opcional, remova se quiser) -->
+                    <span class="text-sm hidden sm:inline-block" sec:authentication="name"></span>
+                </button>
+
+                <!-- Dropdown de logout -->
+                <div x-show="open" @click.away="open = false" x-transition
+                    class="absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-50">
+
+                    <div sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin}"
+                            class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                            Ir para Dashboard
+                        </a>
+                    </sec:authorize>
+                    </div>
+
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit"
+                            class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500 hover:text-white">
+                            Sair
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Carrinho -->
+            <div class="navbar-carrinho relative">
                 <a th:href="@{/carrinho}" class="text-white text-2xl hover:text-orange-500">
                     <i class="fas fa-shopping-cart"></i>
                     <span id="cart-item-count"
-                          class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
-                          th:classappend="${(session.carrinho == null or session.carrinho.quantidadeTotalDeItens == 0) ? 'hidden' : ''}"
-                          th:text="${session.carrinho?.quantidadeTotalDeItens}">
+                        class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                        th:classappend="${(session.carrinho == null or session.carrinho.quantidadeTotalDeItens == 0) ? 'hidden' : ''}"
+                        th:text="${session.carrinho?.quantidadeTotalDeItens}">
                     </span>
                 </a>
             </div>
         </div>
     </div>
-
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg px-4">
-        <form th:action="@{/buscar}" method="get" class="w-full flex">
-            <input type="text" name="q" placeholder="Buscar Tênis..." class="w-full bg-gray-800 text-white border border-gray-700 rounded-l-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500"/>
-            <button type="submit" class="bg-orange-500 text-white p-2 rounded-r-md hover:bg-orange-600">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
     </div>
 </header>

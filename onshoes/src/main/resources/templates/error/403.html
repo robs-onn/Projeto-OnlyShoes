@@ -2,18 +2,19 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layoutpadrao-loja.html}">
-    <link rel="stylesheet" type="text/css" th:href="@{/client/css/loja-style.css}" />   
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Página de Erro 403</title>
-  </head>
-  <body>
-    <!-- conteudo principal -->
-    <main layout:fragment="conteudo" th:fragment="conteudo" id="main" class="flex flex-col align-middle justify-center w-full m-10">
-      <img th:src="@{/images/403.png}" class="mx-auto block mt-5" alt="Erro 403" />
-      <h3 class="text-center mt-5 mb-5">Você não tem permissão para acessar o recurso solicitado. <a th:href="@{/}">Volte para a página principal.</a></h3>
-    </main>
-    <!-- !conteudo principal -->
-  </body>
+<head>
+    <title>Acesso Negado (403)</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="text-center text-white py-20">
+            <img th:src="@{/images/403.png}" class="mx-auto block h-64" alt="Erro 403" />
+            <h1 class="text-3xl font-bold mt-8">Acesso Negado</h1>
+            <p class="text-gray-400 mt-2">Você não tem permissão para acessar este recurso.</p>
+            <a th:href="@{/}" class="mt-8 inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-md uppercase">
+                Voltar para a Página Inicial
+            </a>
+        </div>
+    </div>
+</body>
 </html>

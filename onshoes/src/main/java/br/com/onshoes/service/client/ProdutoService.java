@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.onshoes.model.Produto.CategoriaProduto;
 import br.com.onshoes.model.Produto.Produto;
 import br.com.onshoes.model.Produto.StatusProduto;
-import br.com.onshoes.repository.client.queries.ProdutoRepository;
+import br.com.onshoes.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {

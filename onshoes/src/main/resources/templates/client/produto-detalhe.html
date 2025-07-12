@@ -75,45 +75,34 @@
     <th:block layout:fragment="scripts">
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const tamanhosContainer =
-                    document.getElementById("tamanhos-container");
-                const inputTamanhoSelecionado = document.getElementById(
-                    "tamanho-selecionado"
-                );
+                const tamanhosContainer = document.getElementById("tamanhos-container");
+                const inputTamanhoSelecionado = document.getElementById("tamanho-selecionado");
                 const btnAdicionar = document.getElementById("btn-add-carrinho");
                 const formAdicionar = document.getElementById("form-add-carrinho");
 
-                // Lógica para seleção de tamanho
+                // Lógica para seleção de tamanho (continua a mesma)
                 tamanhosContainer.addEventListener("click", (event) => {
                     const botaoClicado = event.target.closest(".size-button");
                     if (botaoClicado && !botaoClicado.disabled) {
                         document.querySelectorAll(".size-button").forEach((btn) => {
-                            btn.classList.remove(
-                                "bg-orange-500",
-                                "border-orange-500",
-                                "text-white"
-                            );
-                            btn.classList.add("border-gray-600");
+                            btn.classList.remove("bg-orange-500", "border-orange-500", "text-white");
                         });
-                        botaoClicado.classList.add(
-                            "bg-orange-500",
-                            "border-orange-500",
-                            "text-white"
-                        );
+                        botaoClicado.classList.add("bg-orange-500", "border-orange-500", "text-white");
                         inputTamanhoSelecionado.value = botaoClicado.dataset.tamanho;
                         btnAdicionar.disabled = false;
                     }
                 });
 
-                // Lógica para adicionar ao carrinho com fetch
+                // Lógica para adicionar ao carrinho com fetch (CORRIGIDA E ROBUSTA)
                 formAdicionar.addEventListener("submit", function (event) {
                     event.preventDefault();
 
                     const form = event.target;
                     const formData = new FormData(form);
                     const button = form.querySelector('button[type="submit"]');
-                    const originalButtonText = button.innerHTML;
+                    const originalButtonText = "Adicionar ao Carrinho";
 
+                    // Desabilita o botão e mostra feedback visual
                     button.disabled = true;
                     button.innerHTML = "Adicionando...";
 
@@ -121,45 +110,34 @@
                         method: "POST",
                         body: formData,
                     })
-                        .then((response) => {
-                            if (!response.ok) {
-                                throw new Error("Erro na resposta do servidor.");
+                    .then(response => response.ok ? response.json() : Promise.reject('Erro na resposta do servidor.'))
+                    .then(data => {
+                        if (data.success) {
+                            const cartCounter = document.getElementById("cart-item-count");
+                            if (cartCounter) {
+                                cartCounter.textContent = data.quantidadeTotal;
+                                cartCounter.classList.remove("hidden");
                             }
-                            return response.json();
-                        })
-                        .then((data) => {
-                            if (data.success) {
-                                const cartCounter =
-                                    document.getElementById("cart-item-count");
-                                if (cartCounter) {
-                                    cartCounter.textContent = data.quantidadeTotal;
-                                    cartCounter.classList.remove("hidden");
-                                }
 
-                                button.classList.remove(
-                                    "bg-orange-500",
-                                    "hover:bg-orange-600"
-                                );
-                                button.classList.add("bg-green-500");
-                                button.innerHTML = "Adicionado!";
+                            // [CORREÇÃO]: Manipulação de estilo mais direta
+                            button.style.backgroundColor = '#22c55e'; // Cor verde do Tailwind (green-500)
+                            button.innerHTML = "Adicionado!";
 
-                                setTimeout(() => {
-                                    button.disabled = false;
-                                    button.innerHTML = originalButtonText;
-                                    button.classList.remove("bg-green-500");
-                                    button.classList.add(
-                                        "bg-orange-500",
-                                        "hover:bg-orange-600"
-                                    );
-                                }, 2000);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Erro ao adicionar ao carrinho:", error);
-                            alert("Não foi possível adicionar o item ao carrinho.");
-                            button.disabled = false;
-                            button.innerHTML = originalButtonText;
-                        });
+                            // Retorna o botão ao estado original após 2 segundos
+                            setTimeout(() => {
+                                button.disabled = false;
+                                button.innerHTML = originalButtonText;
+                                button.style.backgroundColor = ''; // Remove o estilo inline para voltar ao CSS do Tailwind
+                            }, 2000);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao adicionar ao carrinho:", error);
+                        alert("Não foi possível adicionar o item ao carrinho.");
+                        button.disabled = false;
+                        button.innerHTML = originalButtonText;
+                        button.style.backgroundColor = ''; // Garante que volta ao normal em caso de erro
+                    });
                 });
             });
         </script>

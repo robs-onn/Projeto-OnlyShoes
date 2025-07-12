@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.onshoes.model.Carrinho.Carrinho;
 import br.com.onshoes.model.Produto.Produto;
-import br.com.onshoes.repository.client.queries.ProdutoRepository;
+import br.com.onshoes.repository.ProdutoRepository;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.HashMap;

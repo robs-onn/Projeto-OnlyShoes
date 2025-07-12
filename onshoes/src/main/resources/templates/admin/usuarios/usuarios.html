@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layoutpadrao-admin}">
+
+<head>
+    <title>Gerenciar Usuários</title>
+</head>
+<form id="formStatus" th:action="" method="post" style="display:none;">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+</form>
+
+<body>
+    <div layout:fragment="content" class="main-content">
+        <div class="content-header">
+            <h1>Gerenciar Usuários</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Usuários</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="content-body">
+            <!-- Filtros e Ações -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <form th:action="@{/admin/usuarios}" method="GET" class="row g-3">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="nome" th:value="${param.nome}"
+                                        placeholder="Buscar por nome...">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="email" class="form-control" name="email" th:value="${param.email}"
+                                        placeholder="Buscar por email...">
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" name="papel">
+                                        <option value="">Todos os papéis</option>
+                                        <option value="ADMIN" th:selected="${param.papel == 'ADMIN'}">Administrador
+                                        </option>
+                                        <option value="CLIENTE" th:selected="${param.papel == 'CLIENTE'}">Cliente
+                                        </option>
+                                        <option value="VENDEDOR" th:selected="${param.papel == 'VENDEDOR'}">Vendedor
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-outline-primary w-100">
+                                        <i class="fas fa-search"></i> Buscar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a th:href="@{/admin/usuarios/novo}" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i> Novo Usuário
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Usuários -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Lista de Usuários</h3>
+                    <span class="badge bg-secondary ms-2" th:text="${usuarios.totalElements} + ' usuários'">0
+                        usuários</span>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Avatar</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Papel</th>
+                                    <th>Status</th>
+                                    <th>Data Cadastro</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario : ${usuarios.content}">
+                                    <td>
+                                        <div class="user-avatar-small">
+                                            <i class="fas fa-user-circle fa-2x text-muted"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong th:text="${usuario.nome}">Nome do Usuário</strong>
+                                        <br>
+                                        <small class="text-muted" th:text="${usuario.cpf}">CPF</small>
+                                    </td>
+                                    <td th:text="${usuario.email}">email@exemplo.com</td>
+                                    <td>
+                                        <span class="badge"
+                                            th:classappend="${usuario.papel.name() == 'ADMIN' ? 'bg-danger' : 
+                                                             (usuario.papel.name() == 'VENDEDOR' ? 'bg-warning' : 'bg-info')}"
+                                            th:text="${usuario.papel.descricao}">Papel</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge"
+                                            th:classappend="${usuario.ativo ? 'bg-success' : 'bg-secondary'}"
+                                            th:text="${usuario.ativo ? 'Ativo' : 'Inativo'}">Status</span>
+                                    </td>
+                                    <td th:text="${#temporals.format(usuario.dataCadastro, 'dd/MM/yyyy')}">01/01/2024
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a th:href="@{/admin/usuarios/{id}/editar(id=${usuario.id})}"
+                                                class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-warning"
+                                                title="Alterar Status"
+                                                th:onclick="'alterarStatus(' + ${usuario.id} + ', \'' + ${usuario.nome} + '\', ' + ${usuario.ativo} + ')'">
+                                                <i class="fas fa-toggle-on" th:if="${usuario.ativo}"></i>
+                                                <i class="fas fa-toggle-off" th:unless="${usuario.ativo}"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                                th:onclick="'confirmarExclusao(' + ${usuario.id} + ', \'' + ${usuario.nome} + '\')'">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${usuarios.content.empty}">
+                                    <td colspan="7" class="text-center py-4">
+                                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                                        <p class="text-muted">Nenhum usuário encontrado</p>
+                                        <a th:href="@{/admin/usuarios/novo}" class="btn btn-primary">
+                                            <i class="fas fa-user-plus"></i> Cadastrar Primeiro Usuário
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Paginação -->
+                <div class="card-footer" th:if="${usuarios.totalPages > 1}">
+                    <nav aria-label="Navegação de páginas">
+                        <ul class="pagination justify-content-center mb-0">
+                            <li class="page-item" th:classappend="${usuarios.first} ? 'disabled'">
+                                <a class="page-link"
+                                    th:href="@{/admin/usuarios(page=${usuarios.number - 1}, size=${usuarios.size}, nome=${param.nome}, email=${param.email}, papel=${param.papel})}">
+                                    Anterior
+                                </a>
+                            </li>
+
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, usuarios.totalPages - 1)}"
+                                th:classappend="${i == usuarios.number} ? 'active'">
+                                <a class="page-link"
+                                    th:href="@{/admin/usuarios(page=${i}, size=${usuarios.size}, nome=${param.nome}, email=${param.email}, papel=${param.papel})}"
+                                    th:text="${i + 1}">1</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${usuarios.last} ? 'disabled'">
+                                <a class="page-link"
+                                    th:href="@{/admin/usuarios(page=${usuarios.number + 1}, size=${usuarios.size}, nome=${param.nome}, email=${param.email}, papel=${param.papel})}">
+                                    Próximo
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="modalExclusao" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir o usuário <strong id="nomeUsuarioExclusao"></strong>?</p>
+                    <p class="text-muted">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="formExclusao" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Alteração de Status -->
+    <div class="modal fade" id="modalStatus" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alterar Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja <span id="acaoStatus"></span> o usuário <strong
+                            id="nomeUsuarioStatus"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="formStatus" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-warning" id="btnConfirmarStatus">Confirmar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="scripts">
+        <script>
+            function confirmarExclusao(id, nome) {
+                document.getElementById('nomeUsuarioExclusao').textContent = nome;
+                document.getElementById('formExclusao').action = '/admin/usuarios/' + id + '/excluir';
+                new bootstrap.Modal(document.getElementById('modalExclusao')).show();
+            }
+
+            function alterarStatus(id, nome, ativo) {
+                const acao = ativo ? 'desativar' : 'ativar';
+                document.getElementById('nomeUsuarioStatus').textContent = nome;
+                document.getElementById('acaoStatus').textContent = acao;
+                document.getElementById('formStatus').action = '/admin/usuarios/' + id + '/status';
+                new bootstrap.Modal(document.getElementById('modalStatus')).show();
+            }
+        </script>
+    </th:block>
+</body>
+
+</html>

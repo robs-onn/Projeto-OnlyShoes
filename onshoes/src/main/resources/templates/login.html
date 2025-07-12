@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutpadrao-loja.html}"
+>
+<head>
+    <title>Login - OnlyShoes</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mx-auto px-4 py-16 flex justify-center">
+        <div class="w-full max-w-md">
+            
+            <form th:action="@{/login}" method="post" class="bg-gray-900 shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+                <h2 class="text-2xl font-bold text-white text-center mb-6 uppercase">Acessar Conta</h2>
+
+                <div th:if="${param.error}" class="bg-red-300 border border-red-700 text-red-300 text-center p-3 rounded mb-4">
+                    Usuário ou senha inválidos.
+                </div>
+
+                <div th:if="${param.logout}" class="bg-green-300 border border-green-700 text-green-300 text-center p-3 rounded mb-4">
+                    Você saiu com sucesso.
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm font-bold mb-2" for="username">
+                        Usuário
+                    </label>
+                    <input class="bg-gray-800 border border-gray-700 rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-orange-500" 
+                           id="username" name="username" type="text" placeholder="Seu usuário" required autofocus>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-300 text-sm font-bold mb-2" for="password">
+                        Senha
+                    </label>
+                    <input class="bg-gray-800 border border-gray-700 rounded w-full py-2 px-3 text-white mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-orange-500" 
+                           id="password" name="password" type="password" placeholder="Sua senha" required>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Entrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

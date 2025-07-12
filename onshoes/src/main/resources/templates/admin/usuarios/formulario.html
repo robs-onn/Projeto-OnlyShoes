@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" 
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layoutpadrao-admin.html}">
+    <head></head>
+
+<body class="bg-gray-100 text-gray-900">
+    <div th:replace="~{layout/fragments/admin/sidebar-admin.html :: sidebar-admin}"></div>
+
+    <div class="ml-64 p-8">
+        <h1 class="text-2xl font-semibold mb-4" th:text="${usuario.id != null} ? 'Editar Usuário' : 'Cadastrar Usuário'">Cadastrar Usuário</h1>
+
+        <form th:action="@{/admin/usuarios/salvar}" method="post" th:object="${usuario}" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nome">Nome:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       type="text" id="nome" th:field="*{nome}" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">E-mail:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       type="email" id="email" th:field="*{email}" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="senha">Senha:</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       type="password" id="senha" th:field="*{senha}" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="tipo">Tipo de Usuário:</label>
+                <select th:field="*{tipo}" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">Tipo</option>
+                </select>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                    Salvar
+                </button>
+                <a href="/admin/usuarios" class="inline-block align-baseline font-bold text-sm text-purple-600 hover:text-purple-800">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 -- Inserção do user inical
 INSERT INTO usuario(codigo, username, email, senha, nome, papel, status, data_criacao)
-VALUES (nextval('usuario_codigo_seq'), 'admin', 'admin@onshoes.com.br', '$2a$10$f.oAm0k2e5zJmY9M3fLh9uP7/wS8GgO7bi.2.GBMyo2JISnO9f0iG', 'Admin do Sistema', 'ADMIN', 'ATIVO', '2025-07-09T13:24:46');
+VALUES (nextval('usuario_codigo_seq'), 'admin', 'admin@onshoes.com.br', '$2a$10$iHKBsODntb24M.YatHohc.CPvDIwpniTcIgFAGi3r0Tmv2DLfIlsq', 'Admin do Sistema', 'ADMIN', 'ATIVO', '2025-07-09T13:24:46');
 
 
 -- Inserção dos produtos iniciais

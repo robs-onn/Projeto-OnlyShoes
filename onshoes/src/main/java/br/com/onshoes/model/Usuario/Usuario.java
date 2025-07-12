@@ -1,145 +1,156 @@
 package br.com.onshoes.model.Usuario;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import org.hibernate.annotations.DynamicUpdate;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="usuario")
-@DynamicUpdate
-public class Usuario implements Serializable {
+@Table(name = "usuario")
+public class Usuario implements UserDetails {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@SequenceGenerator(name="gerador2", sequenceName="usuario_codigo_seq", allocationSize=1)
-	@GeneratedValue(generator="gerador2", strategy = GenerationType.SEQUENCE)
-	private Long codigo;
-	
-	@NotBlank(message = "O username é obrigatório")
-	private String username;
-	
-	@NotBlank(message = "O email é obrigatório")
-	@Email(message = "Email deve ter um formato válido")
-	private String email;
-	
-	@NotBlank(message = "A senha é obrigatória")
-	private String senha;
-	
-	@NotBlank(message = "O nome é obrigatório")
-	private String nome;
-	
-	private String telefone;
-	
-	@Enumerated(EnumType.STRING)
-	private TipoUsuario papel = TipoUsuario.CLIENTE;
-	
-	@Enumerated(EnumType.STRING)
-	private StatusUsuario status = StatusUsuario.ATIVO;
-	
-	private LocalDateTime dataCriacao = LocalDateTime.now();
+    private static final long serialVersionUID = 1L;
 
-	public Long getCodigo() {
-		return codigo;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long codigo;
 
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
+    @NotBlank(message = "O username é obrigatório")
+    @Column(unique = true)
+    private String username;
 
-	public String getUsername() {
-		return username;
-	}
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email deve ter um formato válido")
+    @Column(unique = true)
+    private String email;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @NotBlank(message = "A senha é obrigatória")
+    private String senha;
 
-	public String getEmail() {
-		return email;
-	}
+    @NotBlank(message = "O nome é obrigatório")
+    private String nome;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    private String telefone;
 
-	public String getSenha() {
-		return senha;
-	}
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario papel = TipoUsuario.CLIENTE;
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    @Enumerated(EnumType.STRING)
+    private StatusUsuario status = StatusUsuario.ATIVO;
 
-	public String getNome() {
-		return nome;
-	}
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.getPapel().name()));
+    }
 
-	public String getTelefone() {
-		return telefone;
-	}
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
 
-	public TipoUsuario getPapel() {
-		return papel;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	public void setPapel(TipoUsuario papel) {
-		this.papel = papel;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	public StatusUsuario getStatus() {
-		return status;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	public void setStatus(StatusUsuario status) {
-		this.status = status;
-	}
+    @Override
+    public boolean isEnabled() {
+        return this.status == StatusUsuario.ATIVO;
+    }
 
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
-	}
+    public Long getCodigo() {
+        return codigo;
+    }
 
-	public void setDataCriacao(LocalDateTime dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		return result;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		return true;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public String toString() {
-		return "codigo: " + codigo + "\nusername: " + username + "\nnome: " + nome + "\nemail: " + email;
-	}
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public TipoUsuario getPapel() {
+        return papel;
+    }
+
+    public void setPapel(TipoUsuario papel) {
+        this.papel = papel;
+    }
+
+    public StatusUsuario getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusUsuario status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 }
